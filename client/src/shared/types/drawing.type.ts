@@ -11,7 +11,7 @@ export type Point = {
 }
 
 export type DrawStroke = {
-  socketId: string,
+  userId: string,
   points: Point[],
   strokeWidth: number,
   color: string

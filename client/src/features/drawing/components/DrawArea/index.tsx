@@ -205,8 +205,8 @@ export function DrawArea() {
       }
     }, []);
     
-    const drawOtherUserPoints = useCallback((socketId: string, points: Point[]) => {
-      const previousPoints = otherUserStrokes.current.get(socketId) || [];
+    const drawOtherUserPoints = useCallback((userId: string, points: Point[]) => {
+      const previousPoints = otherUserStrokes.current.get(userId) || [];
       
       points.forEach((point, index) => {
         if (previousPoints[index]) {
@@ -224,11 +224,11 @@ export function DrawArea() {
     }, [drawLine, toAbsoluteCoordinates]);
     
     const onOtherUserDrawMove = useCallback((payload: DrawStroke) => {
-      drawOtherUserPoints(payload.socketId, payload.points);
+      drawOtherUserPoints(payload.userId, payload.points);
     }, [drawOtherUserPoints]);
     
     const onOtherUserDrawEnd = useCallback((payload: DrawStroke) => {
-      otherUserStrokes.current.delete(payload.socketId);
+      otherUserStrokes.current.delete(payload.userId);
     }, []);
     
     const getAllStrokes = useCallback(() => {
@@ -237,15 +237,15 @@ export function DrawArea() {
           return;
         }
         data.strokes.forEach((stroke) => {
-          drawOtherUserPoints(stroke.socketId, stroke.points);
+          drawOtherUserPoints(stroke.userId, stroke.points);
         });
       })
     }, [drawOtherUserPoints]);
     
     const onOtherUserDrawStart = useCallback((payload: DrawStroke) => {
-      drawOtherUserPoints(payload.socketId, payload.points);
+      drawOtherUserPoints(payload.userId, payload.points);
       
-      otherUserStrokes.current.set(payload.socketId, payload.points);
+      otherUserStrokes.current.set(payload.userId, payload.points);
     }, [drawOtherUserPoints]);
     
     
